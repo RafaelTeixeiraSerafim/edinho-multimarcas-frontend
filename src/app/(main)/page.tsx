@@ -2,7 +2,7 @@
 
 import Button from "@/components/buttons/Button";
 import Container from "@/components/containers/Container";
-import Select from "@/components/inputs/Select";
+import Select from "@/components/selects/Select";
 import Text from "@/components/texts/Text";
 import { VehicleDTO } from "@/dtos/VehicleDTO";
 import useBrands from "@/hooks/useBrands";
