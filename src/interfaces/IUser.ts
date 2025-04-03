@@ -5,8 +5,6 @@ export interface IUser extends DefaultUser {
   name: string;
   email: string;
   birthdate?: string;
-  cpf?: string;
   nationalId?: string;
   contact?: string;
-  roleName?: string;
 }
