@@ -14,7 +14,7 @@ export default function Container({
 }: ContainerProps) {
   return (
     <div
-      className={mergeClasses("shadow-lg rounded-2xl", className)}
+      className={mergeClasses("shadow-lg rounded-2xl border border-black/10", className)}
       style={style}
     >
       {children}

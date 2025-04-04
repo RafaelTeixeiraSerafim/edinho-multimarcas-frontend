@@ -1,11 +1,8 @@
 "use client";
 
 import { mergeClasses } from "@/utils/mergeClasses";
-import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React from "react";
-import LogoWhite from "@/../public/logo-white.png";
 import Logo from "../logos/Logo";
 
 interface HeaderProps {
@@ -25,14 +22,10 @@ export default function Header({ className = "" }: HeaderProps) {
       <Link href="/" className="text-4xl">
         <Logo size="small" variant="blue" />
       </Link>
-      {session.status !== "authenticated" ? (
+      {session.status !== "authenticated" && (
         <Link className="text-xl" href={"/login"}>
-          login
+          Entrar
         </Link>
-      ) : (
-        <button className="text-xl cursor-pointer" onClick={() => signOut()}>
-          Logout
-        </button>
       )}
     </header>
   );

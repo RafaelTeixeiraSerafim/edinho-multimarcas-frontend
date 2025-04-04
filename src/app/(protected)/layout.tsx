@@ -1,22 +1,30 @@
+"use client";
+
+import Header from "@/components/headers/Header";
+import Sidebar from "@/components/sidebars/Sidebar";
 import { useSession } from "next-auth/react";
 
 import { redirect } from "next/navigation";
 
-export default function PublicLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const sidebarOffset = "1.6rem";
+
+export default function Layout({ children }: { children: React.ReactNode }) {
   const session = useSession();
 
   if (session.status === "unauthenticated") redirect("/login");
 
   return (
-    <div className="flex h-screen bg-white">
-      <div className="overflow-y-auto" style={{ scrollbarWidth: "none" }}></div>
-      <div id="main" className="flex-1 overflow-auto px-4">
-        <div className="grow">{children}</div>
+    <>
+      <Header className="h-18" />
+      <div className="flex flex-1">
+        <Sidebar sidebarOffset={sidebarOffset} />
+        <main
+          className={`flex-1`}
+          style={{ paddingInline: `4rem calc(4rem + ${sidebarOffset})` }}
+        >
+          {children}
+        </main>
       </div>
-    </div>
+    </>
   );
 }

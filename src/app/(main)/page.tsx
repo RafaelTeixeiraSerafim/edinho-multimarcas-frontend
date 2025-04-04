@@ -272,7 +272,7 @@ export default function Home() {
   // }, [prevSelected]);
 
   return (
-    <Container className="w-1/2 mx-auto overflow-hidden mt-10">
+    <Container className="max-w-11/20 mx-auto overflow-hidden mt-10">
       <div className="mx-40 flex flex-col gap-11 py-12">
         <Text variant="titleUnderlined">Consulta de Veículos</Text>
         <div className="flex flex-col gap-6">

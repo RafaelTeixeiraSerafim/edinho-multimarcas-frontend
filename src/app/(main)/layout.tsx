@@ -5,7 +5,9 @@ import Sidebar from "@/components/sidebars/Sidebar";
 import { useSession } from "next-auth/react";
 import React from "react";
 
-export default function ClientLayout({
+const sidebarOffset = "1.6rem";
+
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -15,8 +17,10 @@ export default function ClientLayout({
   return (
     <>
       <Header className="h-18" />
-      {session.status === "authenticated" && <Sidebar />}
-      <main className="flex-1">{children}</main>
+      <div className="flex flex-1">
+        {session.status === "authenticated" && <Sidebar sidebarOffset={sidebarOffset} />}
+        <main className={`flex-1 pr-[${sidebarOffset}]`}>{children}</main>
+      </div>
     </>
   );
 }
