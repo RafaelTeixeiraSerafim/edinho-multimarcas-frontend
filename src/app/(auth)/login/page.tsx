@@ -39,7 +39,6 @@ export default function Login() {
       const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
-        redirect: false,
       });
 
       if (result?.error) {

@@ -41,7 +41,7 @@ export default function Sidebar({ sidebarOffset }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={`overflow-hidden pr-[${sidebarOffset}]`}>
+    <div className={`overflow-hidden`} style={{paddingRight: sidebarOffset}}>
       <aside
         className={`relative border-r border-black/10 shadow-lg h-full flex flex-col justify-between py-15 transition-width duration-300 ease-in-out ${
           isOpen ? "w-52" : "w-17"
