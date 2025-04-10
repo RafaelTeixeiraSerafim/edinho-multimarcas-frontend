@@ -5,14 +5,14 @@ import useCustomQuery from "@/hooks/useCustomQuery";
 import { GridColDef } from "@mui/x-data-grid";
 import GridPageLayout from "../components/layouts/GridPageLayout";
 
-export default function Brands() {
+export default function FuelTypes() {
   const { deleteItem } = useCustomQuery({
-    apiPath: "/brands",
+    apiPath: "/fuel-types",
   });
 
   const columns: GridColDef[] = [
-    { field: "fipeCode", headerName: "Código Fipe", flex: 1 },
     { field: "name", headerName: "Nome", flex: 1 },
+    { field: "abbreviation", headerName: "Abreviação", flex: 1 },
     {
       field: "actions",
       headerName: "Ações",
@@ -26,11 +26,11 @@ export default function Brands() {
 
   return (
     <GridPageLayout
-      breadcrumbs={["Marcas"]}
+      title="Combustíveis"
+      breadcrumbs={["Combustíveis"]}
       columns={columns}
-      createButtonLabel={"Criar marca"}
-      title={"Marcas"}
-      apiPath="/brands"
+      createButtonLabel={"Criar combustível"}
+      apiPath="/fuel-types"
     />
   );
 }

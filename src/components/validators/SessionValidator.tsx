@@ -11,18 +11,16 @@ export default function SessionValidator() {
   useEffect(() => {
     if (status === "loading") return;
 
-    // Check for session error or missing tokens
     if (
       session?.error === "SessionExpired" ||
       (status === "authenticated" && !session.user?.accessToken)
     ) {
-      // Force complete sign out
       signOut({
         redirect: false,
         callbackUrl: "/?session_expired=true",
       }).then(() => {
         router.push("/?session_expired=true");
-        router.refresh(); // Clear client cache
+        router.refresh();
       });
     }
   }, [session, status, router]);

@@ -40,7 +40,7 @@ export default function Input({
   }
 
   return (
-    <div>
+    <div className={className}>
       <div className="relative">
         {startIcon && (
           <div className="absolute left-3.5 top-1/2 -translate-y-1/2">
@@ -53,10 +53,9 @@ export default function Input({
           type={type}
           placeholder={placeholder}
           className={mergeClasses(
-            `py-2 border border-black/50 hover:border-black rounded-md w-full ${
-              startIcon ? "pl-10" : "pl-3"
-            } ${endIcon ? "pr-10" : "pr-3"} `,
-            className
+            `py-2 border border-black/50 hover:border-black rounded-md w-full`,
+            startIcon ? "pl-10" : "pl-3",
+            endIcon ? "pr-10" : "pr-3"
           )}
         />
 

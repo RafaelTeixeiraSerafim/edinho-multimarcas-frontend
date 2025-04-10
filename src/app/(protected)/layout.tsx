@@ -2,25 +2,31 @@
 
 import Header from "@/components/headers/Header";
 import Sidebar from "@/components/sidebars/Sidebar";
+import SessionValidator from "@/components/validators/SessionValidator";
+import SidebarContext from "@/contexts/SidebarContext";
 import { useSession } from "next-auth/react";
 
 import { redirect } from "next/navigation";
-
-const sidebarOffset = "1.6rem";
+import { useContext } from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const session = useSession();
+  const { openSidebarButtonOffset, width } = useContext(SidebarContext);
 
   if (session.status === "unauthenticated") redirect("/login");
 
   return (
     <>
+      <SessionValidator />
       <Header className="h-18" />
-      <div className="flex flex-1">
-        <Sidebar sidebarOffset={sidebarOffset} />
+      <div className="flex flex-1 w-full">
+        <Sidebar />
         <main
-          className={`flex-1`}
-          style={{ paddingInline: `4rem calc(4rem + ${sidebarOffset})` }}
+          style={{
+            width: `calc(100% - ${width} - ${openSidebarButtonOffset})`,
+            paddingInline: `4rem`,
+            paddingRight: `calc(4rem + ${openSidebarButtonOffset})`,
+          }}
         >
           {children}
         </main>
