@@ -1,8 +1,5 @@
-import { ISession } from "@/interfaces/ISession";
 import { IUser } from "@/interfaces/IUser";
 import { http } from "@/lib/apiClient";
-import { Session, User } from "next-auth";
-import { JWT } from "next-auth/jwt";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -15,27 +12,18 @@ async function refreshAccessToken(token: {
   accessToken: string;
   refreshToken: string;
   tokenExpiry: number;
-  error?: string;
 }> {
-  try {
-    const response = await http.post(
-      `/users/auth/refresh-token`,
-      { refreshToken: token.refreshToken }
-    );
+  const response = await http.post(`/users/auth/refresh-token`, {
+    refreshToken: token.refreshToken,
+  });
 
-    const data = await response.data;
+  const data = await response.data;
 
-    return {
-      accessToken: data.accessToken,
-      refreshToken: data.refreshToken,
-      tokenExpiry: data.tokenExpiry,
-    };
-  } catch (error) {
-    return {
-      ...token,
-      error: "RefreshAccessTokenError",
-    };
-  }
+  return {
+    accessToken: data.accessToken,
+    refreshToken: data.refreshToken,
+    tokenExpiry: data.tokenExpiry,
+  };
 }
 
 const handler = NextAuth({
@@ -55,15 +43,12 @@ const handler = NextAuth({
         },
         password: { label: "Senha", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         try {
-          const response = await http.post(
-            `/users/auth`,
-            {
-              email: credentials?.email,
-              password: credentials?.password,
-            }
-          );
+          const response = await http.post(`/users/auth`, {
+            email: credentials?.email,
+            password: credentials?.password,
+          });
 
           const data = await response.data;
 
@@ -106,20 +91,34 @@ const handler = NextAuth({
         return token;
       }
 
-      return refreshAccessToken(token);
+      try {
+        return await refreshAccessToken(token);
+      } catch (error) {
+        return {
+          ...token,
+          accessToken: null,
+          refreshToken: null,
+          tokenExpiry: null,
+          error: "SessionExpired",
+        };
+      }
     },
     async session({ session, token }) {
-      session.user = {
-        ...token.user,
-        accessToken: token.accessToken,
-        refreshToken: token.refreshToken,
-        tokenExpiry: token.tokenExpiry,
-      };
-      session.error = token.error;
+      if (token.error === "SessionExpired") {
+        session.user = null;
+        session.error = token.error;
+      } else {
+        session.user = {
+          ...token.user,
+          accessToken: token.accessToken,
+          refreshToken: token.refreshToken,
+          tokenExpiry: token.tokenExpiry,
+        };
+      }
       return session;
     },
     redirect({ baseUrl }) {
-      return `${baseUrl}`;
+      return baseUrl;
     },
   },
 });

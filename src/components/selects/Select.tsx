@@ -5,7 +5,7 @@ import { FiChevronDown, FiX } from "react-icons/fi";
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   placeholder?: string;
   iconVariant?: "open" | "clear";
-  onClear?(): void;
+  onClear?: () => void;
 }
 
 export default function Select({
@@ -15,6 +15,7 @@ export default function Select({
   value,
   iconVariant = "open",
   onClear,
+  disabled = false,
   ...rest
 }: SelectProps) {
   const [isPlaceholderSelected, setIsPlaceholderSelected] = useState(true);
@@ -24,13 +25,15 @@ export default function Select({
   }, [value]);
 
   return (
-    <div className="relative w-full cursor-pointer">
+    <div className={`relative w-full ${disabled ? "cursor-default" : "cursor-pointer"}`}>
       <select
         {...rest}
         className={mergeClasses(
-          `py-2 border border-black/50 hover:border-black rounded-md w-full pl-3 pr-10 appearance-none cursor-pointer [&>option:not(:first-child)]:text-black ${
-            isPlaceholderSelected ? "text-black/50" : "text-black"
-          }`,
+          `py-2 border  rounded-md w-full pl-3 pr-10 appearance-none cursor-pointer [&>option:not(:first-child)]:text-black `,
+          isPlaceholderSelected ? "text-black/55" : "text-black",
+          disabled
+            ? "text-black/30 pointer-events-none select-none border-black/30"
+            : "border-black/50 hover:border-black",
           className
         )}
         value={value}
@@ -47,7 +50,7 @@ export default function Select({
         }`}
       >
         {iconVariant === "open" ? (
-          <FiChevronDown />
+          <FiChevronDown className={disabled ? "text-black/35" : ""} />
         ) : (
           <button onClick={onClear} className="cursor-pointer">
             <FiX />

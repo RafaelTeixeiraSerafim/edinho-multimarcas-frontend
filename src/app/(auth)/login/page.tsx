@@ -10,12 +10,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  FiLock,
-  FiMail,
-} from "react-icons/fi";
+import { FiLock, FiMail } from "react-icons/fi";
 import { z } from "zod";
 import BgAbstractVideo from "../components/videos/BgAbstractVideo";
+import { useRouter } from "next/navigation";
 
 const loginSchema = z.object({
   email: z.string().email("Email inválido"),
@@ -32,6 +30,7 @@ export default function Login() {
     formState: { errors },
     setError,
   } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) });
+  const router = useRouter();
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
@@ -39,13 +38,12 @@ export default function Login() {
       const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
-        redirect: false,
       });
 
       if (result?.error) {
         setError("root", { message: result.error });
       } else {
-        window.location.href = "/";
+        router.push("/");
       }
     } catch (error) {
       console.log(error);
@@ -94,7 +92,9 @@ export default function Login() {
           </Text>
         </div>
         {errors.root && (
-          <Text color="error" className="mt-2">{errors.root.message}</Text>
+          <Text color="error" className="mt-2">
+            {errors.root.message}
+          </Text>
         )}
       </form>
     </Container>

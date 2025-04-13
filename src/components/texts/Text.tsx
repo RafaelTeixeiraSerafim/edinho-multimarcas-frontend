@@ -4,6 +4,7 @@ import React from "react";
 interface TextProps extends React.HTMLAttributes<HTMLHeadingElement> {
   variant?: "default" | "title" | "titleUnderlined";
   color?: "default" | "primary" | "error";
+  align?: "left" | "center" | "right";
 }
 
 export default function Text({
@@ -11,6 +12,7 @@ export default function Text({
   variant = "default",
   className = "",
   color = "default",
+  align = "center",
   ...rest
 }: TextProps) {
   const pVariantMap = {
@@ -27,11 +29,11 @@ export default function Text({
 
   return (
     <div
-      className={`${
-        variant === "titleUnderlined"
-          ? "border-b-primary-main border-b-3 mx-auto"
-          : ""
-      } w-fit`}
+      className={mergeClasses(
+        `w-fit`,
+        variant === "titleUnderlined" ? "border-b-primary-main border-b-3" : "",
+        align === "left" ? "text-left" : "mx-auto",
+      )}
     >
       <p
         {...rest}
